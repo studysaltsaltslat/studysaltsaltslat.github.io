@@ -5,4 +5,4 @@ avatarImage:
 githubCalendar: 'studysaltsaltslat'
 ---
 
-Welcome to the example site. This site is meant to show off my custom Astro theme/template **MultiTerm** which creates a coder-ready blog complete with an interactive theme changer, RSS, sitemap, tagging, and markdown extensions.
+I am studysalt, a senior undergraduate (zero-year graduate student) majoring in Microelectronics Science and Engineering at the National University of Defense Technology. My research interest lies in NPU accelerator design.
