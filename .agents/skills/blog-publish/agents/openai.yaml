@@ -1,0 +1,4 @@
+interface:
+  display_name: "博客发布"
+  short_description: "检测仓库状态，构建后提交并推送博客"
+  default_prompt: "Use $blog-publish to build, commit and push the blog."
