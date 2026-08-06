@@ -1,0 +1,4 @@
+interface:
+  display_name: "博客文章 Frontmatter 自动配置"
+  short_description: "检测新增博客文章，自动补全标题、描述、标签、语言与封面图"
+  default_prompt: "Use $blog-frontmatter to fill in the frontmatter for newly added blog posts in src/content/blog."

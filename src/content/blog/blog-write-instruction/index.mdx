@@ -1,0 +1,232 @@
+---
+title: '如何用Astro框架写博客'
+description: '从新建文章、Frontmatter 字段到 Markdown/MDX 写法，一篇看懂本站的写作流程。'
+publishDate: 2026-08-06
+tags: ['教程', 'astro', '写作', 'blog']
+language: '中文'
+draft: false
+comment: false
+heroImage:
+  src: './example-images.jpg' 
+  alt: '封面图说明'
+  color: '#E0528B'     
+---
+
+import { Aside, Card, Collapse, Spoiler, Steps, Tabs, TabItem, Timeline } from 'astro-pure/user'
+import { GithubCard } from 'astro-pure/advanced'
+
+> 这篇文章由AI生成，PonyWee确保其准确性，引用块的内容是本人的评论
+
+本站基于 [Astro](https://astro.build/) 和 [Astro Theme Pure](https://astro-pure.js.org/) 主题搭建。这篇文章就是写给自己的「写作手册」：怎么新建文章、Frontmatter 怎么写、Markdown/MDX 有哪些可用的功能。
+
+> 如果只是简单写写，用md就行
+
+## 新建一篇文章
+
+有两种方式，任选其一。
+
+**方式一：命令行生成**
+
+```shell
+npm run pure new "文章标题"
+```
+
+常用参数：
+
+| 参数 | 作用 |
+| --- | --- |
+| `-l zh` | 标记语言为中文 |
+| `-d` | 创建为草稿（仅本地可见） |
+| `-m` | 使用 MDX 格式 |
+| `-f` | 创建为文件夹形式（推荐，方便放图片） |
+
+例如：
+
+```shell
+npm run pure new -l zh -f "我的新文章"
+```
+
+命令会在 `src/content/blog/` 下生成带基础 Frontmatter 的文件。有一个小坑：CLI 生成的是 `lang` 字段，但主题实际读取的是 `language`，所以要么手动改成 `language: '中文'`，要么删掉。
+
+> 推荐就手动创建吧，简单方便。创建时文件夹名称用英文，空格用`-`代替。然后md文件用`index.md`（必须叫这个名字）。 
+
+**方式二：手动创建**
+
+直接在 `src/content/blog/` 下新建文件：
+
+- 简单文章：`src/content/blog/my-post.md`
+- 带图片或组件的文章（推荐）：`src/content/blog/my-post/index.md`（或 `.mdx`），图片放在同一文件夹里
+
+> 推荐创建文件夹，好管理图片附件
+
+## Frontmatter 格式
+
+> 这个部分我创建了一个skills，使用 /blog-frontmatter 就可以直接生成
+
+主题会对 Frontmatter 做校验，必填字段缺失会导致构建报错：
+
+| 字段 | 必填 | 说明 |
+| --- | --- | --- |
+| `title` | 是 | 标题，最多 60 字符 |
+| `description` | 是 | 摘要，10-160 字符，用于列表页、SEO 和 RSS |
+| `publishDate` | 是 | 发布日期，如 `2026-08-06` 或 `2026-08-06 10:00:00` |
+| `updatedDate` | 否 | 更新日期 |
+| `tags` | 否 | 标签数组，自动转小写并去重 |
+| `language` | 否 | 文章语言，如 `中文` / `English` |
+| `heroImage` | 否 | 封面图，见下方说明 |
+| `draft` | 否 | 设为 `true` 时仅开发模式可见 |
+| `comment` | 否 | 是否启用评论区（本站评论未启用，可留默认） |
+
+一个完整的示例：
+
+```yaml
+---
+title: '如何用这个框架写博客'
+description: '从新建文章、Frontmatter 字段到 Markdown/MDX 写法，一篇看懂本站写作流程。'
+publishDate: 2026-08-06
+tags: ['教程', 'astro', '写作']
+language: '中文'
+draft: false
+comment: false
+heroImage:
+  src: './example-images.jpg'   # 图片放在文章同目录
+  alt: '封面图说明'
+  color: '#E0528B'     # 可选，决定文章页的高亮色
+---
+```
+
+## Markdown 基础
+
+普通的 `.md` 文件支持完整 Markdown 语法，直接写就行。
+
+**代码块**：主题自带标题、复制按钮、行号、长代码折叠等功能：
+
+```python title="hello.py"
+def hello():
+    print("Hello, World!")
+```
+
+支持 Diff 标记（`+` 添加、`-` 删除）和 `==` 高亮：
+
+```diff title="diff 示例"
++ print("hello")
+- console.log("hello")
+```
+
+**数学公式**：KaTeX 已内置，行内公式用 `$...$`，块级公式用 `$$...$$`。
+
+行内公式 $E = mc^2$，块级公式：
+
+$$
+a + ar + ar^2 + \dots + ar^{n-1} = a\frac{1 - r^n}{1 - r}
+$$
+
+**图片**：本地图片放在文章所在目录，封面图通过 Frontmatter 的 `heroImage` 引用（JSON 形式），正文插图直接用 Markdown 语法即可。这篇文章同目录下就有一张示例图 `example-images.jpg`：
+
+![示例图](./example-images.jpg)
+
+```md
+![示例图](./example-images.jpg)
+```
+
+如果想在正文里控制图片样式（圆角、宽度等），可以用 MDX 导入图片：
+
+> 这一部分感觉不用看
+
+```mdx
+import { Image } from 'astro:assets'
+import cover from './example-images.jpg'
+
+<Image src={cover} alt='示例图' class='rounded-lg' />
+```
+
+<Aside type='tip'>
+本站已关闭图片自动优化，图片会原样输出。上传前建议先用 Squoosh 之类的工具压缩一下，单张控制在几百 KB 内。如果遇到 `LocalImageUsedWrongly` 报错，通常是 dev server 缓存没刷新，重启 `npm run dev` 或稍等重新同步即可。
+</Aside>
+
+## MDX 与内置组件
+
+> 这一部分感觉也不用看
+
+扩展名改成 `.mdx` 后，就能在文章里直接使用组件。先 import 再使用：
+
+```mdx
+import { Aside, Card, Collapse, Spoiler, Steps, Tabs, TabItem, Timeline } from 'astro-pure/user'
+```
+
+**提示框 Aside**：
+
+<Aside type='tip'>这是一条 tip 提示。</Aside>
+
+<Aside type='caution' title='注意'>这是一条 caution 提示。</Aside>
+
+<Aside type='danger'>这是一条 danger 提示。</Aside>
+
+```mdx
+<Aside type='tip'>这是一条 tip 提示。</Aside>
+<Aside type='caution' title='注意'>这是一条 caution 提示。</Aside>
+<Aside type='danger'>这是一条 danger 提示。</Aside>
+```
+
+**标签页 Tabs**：
+
+<Tabs>
+  <TabItem label='Markdown'>适合纯文字文章</TabItem>
+  <TabItem label='MDX'>可以嵌入各种组件</TabItem>
+</Tabs>
+
+```mdx
+<Tabs>
+  <TabItem label='Markdown'>适合纯文字文章</TabItem>
+  <TabItem label='MDX'>可以嵌入各种组件</TabItem>
+</Tabs>
+```
+
+**折叠 Collapse / 剧透 Spoiler**：
+
+<Collapse title='点开看答案'>这里是折叠内容。</Collapse>
+
+<Spoiler>这里是被剧透保护的内容。</Spoiler>
+
+**步骤 Steps**：
+
+<Steps>
+1. 写好文章
+2. 本地预览
+3. 推送到 GitHub
+</Steps>
+
+**卡片 Card / 时间线 Timeline**：
+
+<Card heading='示例卡片' subheading='卡片副标题' date='2026-08' />
+
+<Timeline events={[{ date: '2026-08-06', content: '发布了本站写作指南' }]} />
+
+**高级组件**（从 `astro-pure/advanced` 导入，如 GitHub 卡片、随机语录、链接预览、二维码等）：
+
+```mdx
+import { GithubCard, Quote, LinkPreview, QRCode } from 'astro-pure/advanced'
+
+<GithubCard repo='studysaltsaltslat/studysaltsaltslat.github.io' />
+<Quote />
+```
+
+<GithubCard repo='studysaltsaltslat/studysaltsaltslat.github.io' />
+
+## 发布流程
+
+1. 确认 `draft: false`，本地 `npm run dev` 预览。
+2. 构建检查：`npm run build`（会先运行主题配置检查和类型检查）。
+3. 推送到 `main` 分支，GitHub Actions 会自动构建并部署到 GitHub Pages。
+
+> 发布这部分我也写了一个skills，
+
+## 小贴士
+
+- `description` 必填且不超过 160 字符，漏写会导致构建失败。
+- 标题不要超过 60 字符。
+- 带图片的文章建议用文件夹形式（`slug/index.md`），图片放同目录。
+- 封面图用 Frontmatter 的 `heroImage`（JSON 对象形式），正文插图用 `![alt](./x.jpg)` 或 MDX 导入都可以。
+- 标签会自动转小写并去重，重复写也没关系。
+- 新文章会自动出现在首页「Posts」、Blog 列表、标签页、归档页，并被站内搜索（Pagefind）索引。
+- 更多细节可以参考主题官方文档：https://astro-pure.js.org/docs/
