@@ -23,13 +23,13 @@
   --foreground: 350 15% 95%;
   --muted-foreground: 350 12% 78%;
   /* Background */
-  --background: 345 18% 11%;
-  --muted: 350 12% 27%;
-  --card: 350 12% 33%;
+  --background: 345 16% 19%;
+  --muted: 350 12% 36%;
+  --card: 350 12% 42%;
 
   /* Basic */
-  --border: 350 12% 35%;
-  --input: 350 12% 24%;
+  --border: 350 12% 44%;
+  --input: 350 12% 32%;
   --ring: 340 60% 72%;
 }
 :root {
@@ -37,6 +37,13 @@
 }
 html.dark {
   color-scheme: dark;
+}
+
+/* Top highlight gradient (theme-aware) */
+#highlight-gradient {
+  height: 100vh;
+  opacity: 0.25;
+  background-image: linear-gradient(var(--highlightColor), transparent);
 }
 
 /* Global */
