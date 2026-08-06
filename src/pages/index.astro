@@ -1,76 +1,70 @@
 ---
-import Layout from '~/layouts/Layout.astro'
-import { getSortedPosts } from '~/utils'
-import { getCollection, render } from 'astro:content'
-import PostPreview from '~/components/PostPreview.astro'
-import Pagination from '~/components/Pagination.astro'
-import BlockHeader from '~/components/BlockHeader.astro'
-import HomeBanner from '~/components/HomeBanner.astro'
-import siteConfig from '~/site.config'
-import TagsSection from '~/components/TagsSection.astro'
-import SeriesSection from '~/components/SeriesSection.astro'
+import { Image } from 'astro:assets'
 
-const home = await getCollection('home')
-let HomeContent
-let homeAvatarImage
-let homeGithubCalendar
-if (home.length > 0) {
-  const homeEntry = home[0]
-  const { Content } = await render(homeEntry)
-  HomeContent = Content
-  homeAvatarImage = homeEntry.data.avatarImage
-  homeGithubCalendar = homeEntry.data.githubCalendar
-}
-const sortedPosts = await getSortedPosts()
-const postsHaveTags = sortedPosts.some(
-  (post) => post.data.tags && post.data.tags.length > 0,
+import { Quote } from 'astro-pure/advanced'
+import { PostPreview } from 'astro-pure/components/pages'
+import { getBlogCollection, sortMDByDate } from 'astro-pure/server'
+import { Button, Icon, Label } from 'astro-pure/user'
+import PageLayout from '@/layouts/BaseLayout.astro'
+import Section from '@/components/home/Section.astro'
+import config from '@/site-config'
+
+const MAX_POSTS = 10
+const allPosts = await getBlogCollection()
+const allPostsByDate = sortMDByDate(allPosts).slice(0, MAX_POSTS)
+
+const imagePath = config.logo.src
+const images = import.meta.glob<{ default: ImageMetadata }>(
+  '/src/assets/*.{jpeg,jpg,png,gif,avif,webp}'
 )
-
-const postsHaveSeries = sortedPosts.some((post) => post.data.series)
+if (!images[imagePath])
+  throw new Error(
+    `"${imagePath}" does not exist in glob: "src/assets/*.{jpeg,jpg,png,gif,avif,webp}"`
+  )
 ---
 
-<Layout>
-  {
-    HomeContent && (
-      <HomeBanner avatarImage={homeAvatarImage} githubCalendar={homeGithubCalendar}>
-        <HomeContent />
-      </HomeBanner>
-    )
-  }
-  {
-    postsHaveSeries && (
-      <section>
-        <BlockHeader>Series</BlockHeader>
-        <SeriesSection posts={sortedPosts} />
-      </section>
-    )
-  }
-  {
-    postsHaveTags && (
-      <section>
-        <BlockHeader>Tags</BlockHeader>
-        <TagsSection posts={sortedPosts} />
-      </section>
-    )
-  }
-  {
-    sortedPosts.length > 0 && (
-      <section>
-        <BlockHeader>Latest Posts</BlockHeader>
-        {sortedPosts
-          .reverse()
-          .slice(0, Math.floor(siteConfig.pageSize / 2))
-          .map((post) => (
-            <PostPreview post={post} />
-          ))}
-        <Pagination nextLink="/posts" nextText="Archive" />
-      </section>
-    )
-  }
-</Layout>
+<PageLayout meta={{ title: 'Home' }} highlightColor='#E0528B'>
+  <main class='flex w-full flex-col items-center'>
+    <section class='animate mb-10 flex flex-col items-center gap-y-7' id='content-header'>
+      <Image
+        src={images[imagePath]()}
+        alt={config.logo.alt || 'Profile'}
+        class='h-28 w-auto rounded-full border p-1'
+        loading='eager'
+        fetchpriority='high'
+      />
 
-<style is:global>
-  a.heading-anchor {
-    display: none !important;
-  }
-</style>
+      <div class='flex flex-col items-center gap-y-4'>
+        <h1 class='text-3xl font-medium'>{config.author}</h1>
+        <div class='flex flex-wrap justify-center gap-x-7 gap-y-3'>
+        </div>
+      </div>
+    </section>
+
+    <div id='content' class='animate flex flex-col gap-y-10 md:w-4/5 lg:w-5/6'>
+      <Section title='About'>
+        <p class='text-muted-foreground'>
+          I am studysalt, a senior undergraduate (zero-year graduate student) majoring in
+          Microelectronics Science and Engineering at the National University of Defense Technology.
+          My research interest lies in NPU accelerator design.
+        </p>
+        <Button title='More about me' class='w-fit self-end' href='/about' variant='ahead' />
+      </Section>
+      {
+        allPostsByDate.length > 0 && (
+          <Section title='Posts'>
+            <ul class='flex flex-col gap-y-1.5 sm:gap-y-2'>
+              {allPostsByDate.map((p) => (
+                <li class='flex flex-col gap-x-2 sm:flex-row'>
+                  <PostPreview post={p} />
+                </li>
+              ))}
+            </ul>
+            <Button title='More posts' class='w-fit self-end' href='/blog' variant='ahead' />
+          </Section>
+        )
+      }
+    </div>
+    <Quote class='mt-12' />
+  </main>
+</PageLayout>

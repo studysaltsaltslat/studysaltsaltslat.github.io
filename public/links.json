@@ -1,0 +1,26 @@
+{
+  "friends": [
+    {
+      "id_name": "cf-links",
+      "desc": "Common links included in circle friends",
+      "link_list": [
+        {
+          "name": "Pengwee Wang's blog",
+          "intro": "Time waits for no one.",
+          "link": "https://pengwee.wang",
+          "avatar": "https://pengwee.wang/favicon/favicon.ico"
+        }
+      ]
+    },
+    {
+      "id_name": "inactive-links",
+      "desc": "Inactive or rule-breaking friends",
+      "link_list": []
+    },
+    {
+      "id_name": "special-links",
+      "desc": "Other special links",
+      "link_list": []
+    }
+  ]
+}

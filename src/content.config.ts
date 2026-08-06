@@ -1,57 +1,44 @@
-import { defineCollection, z } from 'astro:content'
+import { defineCollection } from 'astro:content'
 import { glob } from 'astro/loaders'
+import { z } from 'astro/zod'
 
-const postsCollection = defineCollection({
-  loader: glob({ pattern: ['**/*.md', '**/*.mdx'], base: './src/content/posts' }),
-  schema: ({ image }) =>
-    z.object({
-      title: z.string(),
-      published: z.coerce.date(),
-      // updated: z.coerce.date().optional(),
-      draft: z.boolean().optional().default(false),
-      description: z.string().optional(),
-      author: z.string().optional(),
-      series: z.string().optional(),
-      tags: z.array(z.string()).optional().default([]),
-      coverImage: z
-        .strictObject({
-          src: image(),
-          alt: z.string(),
-        })
-        .optional(),
-      toc: z.boolean().optional().default(true),
-    }),
-})
-
-const homeCollection = defineCollection({
-  loader: glob({ pattern: ['home.md', 'home.mdx'], base: './src/content' }),
-  schema: ({ image }) =>
-    z.object({
-      avatarImage: z
-        .object({
-          src: image(),
-          alt: z.string().optional().default('My avatar'),
-        })
-        .optional(),
-      githubCalendar: z.string().optional(), // GitHub username for calendar
-    }),
-})
-
-const addendumCollection = defineCollection({
-  loader: glob({ pattern: ['addendum.md', 'addendum.mdx'], base: './src/content' }),
-  schema: ({ image }) =>
-    z.object({
-      avatarImage: z
-        .object({
-          src: image(),
-          alt: z.string().optional().default('My avatar'),
-        })
-        .optional(),
-    }),
-})
-
-export const collections = {
-  posts: postsCollection,
-  home: homeCollection,
-  addendum: addendumCollection,
+function removeDupsAndLowerCase(array: string[]) {
+  if (!array.length) return array
+  const lowercaseItems = array.map((str) => str.toLowerCase())
+  const distinctItems = new Set(lowercaseItems)
+  return Array.from(distinctItems)
 }
+
+// Define blog collection
+const blog = defineCollection({
+  // Load Markdown and MDX files in the `src/content/blog/` directory.
+  loader: glob({ base: './src/content/blog', pattern: '**/*.{md,mdx}' }),
+  // Required
+  schema: ({ image }) =>
+    z.object({
+      // Required
+      title: z.string().max(60),
+      description: z.string().max(160),
+      publishDate: z.coerce.date(),
+      // Optional
+      updatedDate: z.coerce.date().optional(),
+      heroImage: z
+        .object({
+          src: image(),
+          alt: z.string().optional(),
+          inferSize: z.boolean().optional(),
+          width: z.number().optional(),
+          height: z.number().optional(),
+
+          color: z.string().optional()
+        })
+        .optional(),
+      tags: z.array(z.string()).default([]).transform(removeDupsAndLowerCase),
+      language: z.string().optional(),
+      draft: z.boolean().default(false),
+      // Special fields
+      comment: z.boolean().default(true)
+    })
+})
+
+export const collections = { blog }

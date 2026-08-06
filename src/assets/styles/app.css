@@ -1,0 +1,48 @@
+/* Theme */
+:root {
+  /* Primary */
+  --primary: 336 70% 60%;
+  /* Foreground */
+  --foreground: 340 25% 25%;
+  --muted-foreground: 338 15% 45%;
+  /* Background */
+  --background: 345 50% 98%;
+  --muted: 340 30% 94%;
+  --card: 340 25% 90%;
+
+  /* Basic */
+  --border: 340 20% 88%;
+  --input: 340 25% 90%;
+  --ring: 336 70% 60%;
+  --radius: 0.5rem;
+}
+.dark {
+  /* Primary */
+  --primary: 340 60% 72%;
+  /* Foreground */
+  --foreground: 350 15% 95%;
+  --muted-foreground: 350 12% 78%;
+  /* Background */
+  --background: 345 18% 11%;
+  --muted: 350 12% 27%;
+  --card: 350 12% 33%;
+
+  /* Basic */
+  --border: 350 12% 35%;
+  --input: 350 12% 24%;
+  --ring: 340 60% 72%;
+}
+:root {
+  --un-default-border-color: hsl(var(--border) / 1);
+}
+html.dark {
+  color-scheme: dark;
+}
+
+/* Global */
+a {
+  transition: color 0.2s ease;
+  &:hover {
+    color: hsl(var(--primary) / var(--un-text-opacity, 1));
+  }
+}

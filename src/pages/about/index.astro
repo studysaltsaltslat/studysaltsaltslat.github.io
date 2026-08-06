@@ -1,0 +1,18 @@
+---
+import PageLayout from '@/layouts/CommonPage.astro'
+
+const headings = [
+  { depth: 2, slug: 'about-me', text: 'About Me' },
+  { depth: 2, slug: 'research-interest', text: 'Research Interest' }
+]
+---
+
+<PageLayout title='About' {headings}>
+  <p>
+    I am studysalt, a senior undergraduate (zero-year graduate student) majoring in Microelectronics
+    Science and Engineering at the National University of Defense Technology.
+  </p>
+
+  <h2 id='research-interest'>Research Interest</h2>
+  <p>My research interest lies in NPU accelerator design.</p>
+</PageLayout>

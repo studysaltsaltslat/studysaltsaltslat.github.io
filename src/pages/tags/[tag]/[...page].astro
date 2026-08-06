@@ -1,40 +1,72 @@
 ---
-import type { GetStaticPaths } from 'astro'
-import Layout from '~/layouts/Layout.astro'
-import { TagsGroup } from '~/utils'
-import Pagination from '~/components/Pagination.astro'
-import siteConfig from '~/site.config'
-import PostPreview from '~/components/PostPreview.astro'
-import PageHeader from '~/components/PageHeader.astro'
+import type { GetStaticPaths, Page } from 'astro'
+import type { CollectionEntry } from 'astro:content'
 
-// Note: Pagination like '/', '/2', '/3' only works with spread param like [...page]
-export const getStaticPaths = (async ({ paginate }) => {
-  const tagsGroup = await TagsGroup.build()
-  const pages = tagsGroup.collations.flatMap((tags) => {
-    // Use flatMap to lift the posts for each tag into a single array
-    return paginate(tags.entries.reverse(), {
-      props: { tagTitle: tags.title },
-      params: { tag: tags.titleSlug },
-      pageSize: siteConfig.pageSize,
+import { Paginator, PostPreview } from 'astro-pure/components/pages'
+import { getBlogCollection, getUniqueTags, sortMDByDate } from 'astro-pure/server'
+import { Button } from 'astro-pure/user'
+import PageLayout from '@/layouts/BaseLayout.astro'
+import config from '@/site-config'
+
+export const prerender = true
+
+export const getStaticPaths: GetStaticPaths = async ({ paginate }) => {
+  const allPosts = await getBlogCollection()
+  const allPostsByDate = sortMDByDate(allPosts)
+  const uniqueTags = getUniqueTags(allPostsByDate)
+
+  return uniqueTags.flatMap((tag) => {
+    const filterPosts = allPostsByDate.filter((post) => post.data.tags.includes(tag))
+    return paginate(filterPosts, {
+      pageSize: config.content.blogPageSize,
+      params: { tag }
     })
   })
-  return pages
-}) satisfies GetStaticPaths
+}
 
-const { page, tagTitle } = Astro.props
-const pageTitle =
-  `Tag: ${tagTitle}` + (page.currentPage > 1 ? ` - Page ${page.currentPage}` : '')
+interface Props {
+  page: Page<CollectionEntry<'blog'>>
+}
+
+const { page } = Astro.props
+const { tag } = Astro.params
+
+const meta = {
+  description: `View all posts with the tag - ${tag}`,
+  title: `Tag: ${tag}`
+}
+
+const paginationProps = {
+  ...(page.url.prev && {
+    prevUrl: {
+      text: `← Previous Tags`,
+      url: page.url.prev
+    }
+  }),
+  ...(page.url.next && {
+    nextUrl: {
+      text: `Next Tags →`,
+      url: page.url.next
+    }
+  })
+}
 ---
 
-<Layout title={pageTitle} description={`All posts tagged with ${tagTitle}`}>
-  <div class="mt-2 sm:mt-0">
-    <PageHeader titlePieces={['tags', tagTitle]} />
-    {page.data.map((post) => <PostPreview post={post} />)}
-    <Pagination
-      prevLink={page.url.prev ? encodeURI(page.url.prev) : undefined}
-      prevText="Newer Posts"
-      nextLink={page.url.next ? encodeURI(page.url.next) : undefined}
-      nextText="Older Posts"
-    />
-  </div>
-</Layout>
+<PageLayout {meta}>
+  <Button title='Back' href='/blog' variant='back' />
+  <main class='mt-6 lg:mt-10'>
+    <div id='content-header' class='animate'>
+      <h1 class='mb-6 flex items-end gap-x-2 text-3xl font-medium'>
+        Tags:
+        <span class='text-2xl'>#{tag}</span>
+      </h1>
+    </div>
+
+    <section id='content' class='animate' aria-label='Blog post list'>
+      <ul class='flex flex-col gap-y-3 text-start'>
+        {page.data.map((post) => <PostPreview {post} detailed />)}
+      </ul>
+      <Paginator {...paginationProps} />
+    </section>
+  </main>
+</PageLayout>
