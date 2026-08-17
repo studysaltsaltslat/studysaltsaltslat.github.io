@@ -165,11 +165,11 @@ output[channel] = (input[channel] - mean[channel]) / std[channel]
 <table style="width: 100%; border: none;">
   <tr>
     <td style="border: none; vertical-align: top; text-align: center;">
-      <img src="assets/image-20260807073811484.png" alt="归一化前" style="width: 100%;" />
+      <img src="/assets/pytorch-deep-learning-quickstart/image-20260807073811484.png" alt="归一化前" style="width: 100%;" />
       <p style="text-align: center;">归一化前</p>
     </td>
     <td style="border: none; vertical-align: top; text-align: center;">
-      <img src="assets/image-20260807073824201.png" alt="归一化后" style="width: 100%;" />
+      <img src="/assets/pytorch-deep-learning-quickstart/image-20260807073824201.png" alt="归一化后" style="width: 100%;" />
       <p style="text-align: center;">归一化后</p>
     </td>
   </tr>
@@ -582,7 +582,7 @@ y = xW^T + b
 $$
 输入的每个特征都会和输出层的每个神经元连接，并进行加权求和。
 
-<img src="assets/image-20260809140947221.png" alt="image-20260809140947221" style="zoom: 15%;" />
+<img src="/assets/pytorch-deep-learning-quickstart/image-20260809140947221.png" alt="image-20260809140947221" style="zoom: 15%;" />
 
 ```python
 import torch
@@ -680,7 +680,7 @@ torch.Size([1, 1, 1, 10])
 
 以`CIFAR10`为例，模型如下图所示：
 
-<img src="assets/image-20260809161919296.png" alt="image-20260809161919296" style="zoom: 33%;" />
+<img src="/assets/pytorch-deep-learning-quickstart/image-20260809161919296.png" alt="image-20260809161919296" style="zoom: 33%;" />
 
 卷积核的通道和输入通道相同，卷积核的个数和输出通道相同。
 
@@ -739,7 +739,7 @@ Net(
 torch.Size([64, 10])
 ```
 
-<img src="assets/image-20260809230136587.png" alt="image-20260809230136587" style="zoom: 40%;" />
+<img src="/assets/pytorch-deep-learning-quickstart/image-20260809230136587.png" alt="image-20260809230136587" style="zoom: 40%;" />
 
 ### 损失函数与反向传播
 
@@ -791,7 +791,7 @@ $$
 $$
 例如，下图中图片为狗，
 
-<img src="assets/image-20260810091244357.png" alt="image-20260810091244357" style="zoom: 60%;" />
+<img src="/assets/pytorch-deep-learning-quickstart/image-20260810091244357.png" alt="image-20260810091244357" style="zoom: 60%;" />
 
 ```python
 target = ["person", "dog", "cat"]
