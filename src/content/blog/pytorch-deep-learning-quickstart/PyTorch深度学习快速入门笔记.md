@@ -1,3 +1,11 @@
+---
+title: 'PyTorch 深度学习快速入门笔记'
+description: '一份面向初学者的 PyTorch 快速入门笔记，涵盖 TensorBoard、图像预处理、卷积与池化、网络搭建、损失函数、训练验证及 GPU 推理。'
+publishDate: '2026-08-17'
+tags: ['PyTorch', '深度学习', 'torchvision', '神经网络', '机器学习']
+language: '中文'
+---
+
 ## 环境准备
 
 创建环境：
