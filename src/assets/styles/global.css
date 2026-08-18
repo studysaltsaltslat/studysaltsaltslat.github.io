@@ -42,22 +42,23 @@ mark {
 
 /* Keep each nested TOC level visually distinct (the theme's default only
  * differentiates headings up to level 2). */
-toc-heading ul ul a.ps-7 {
-  padding-inline-start: 3rem !important;
+/* Indent every nested TOC level by a small, consistent amount. */
+toc-heading > ul > li > ul a {
+  padding-inline-start: 1.5rem !important;
 }
-toc-heading ul ul ul a.ps-7 {
-  padding-inline-start: 4.5rem !important;
+toc-heading > ul > li > ul > li > ul a {
+  padding-inline-start: 2.5rem !important;
 }
-toc-heading ul ul ul ul a.ps-7 {
-  padding-inline-start: 6rem !important;
+toc-heading > ul > li > ul > li > ul > li > ul a {
+  padding-inline-start: 3.5rem !important;
 }
-toc-heading ul ul a.ps-7 {
+toc-heading ul ul a {
   font-size: 0.95em;
 }
-toc-heading ul ul ul a.ps-7 {
+toc-heading ul ul ul a {
   font-size: 0.9em;
 }
-toc-heading ul ul ul ul a.ps-7 {
+toc-heading ul ul ul ul a {
   font-size: 0.85em;
 }
 toc-heading .toc-item {
