@@ -32,6 +32,26 @@
 }
 
 /* [Katex] */
+/* Markdown ==text== highlighting */
+mark {
+  color: inherit;
+  background-color: hsl(var(--primary) / 0.2);
+  border-radius: 0.2em;
+  padding-inline: 0.15em;
+}
+
+/* Keep each nested TOC level visually distinct (the theme's default only
+ * differentiates headings up to level 2). */
+toc-heading ul ul a {
+  padding-inline-start: 3rem;
+}
+toc-heading ul ul ul a {
+  padding-inline-start: 4.5rem;
+}
+toc-heading ul ul ul ul a {
+  padding-inline-start: 6rem;
+}
+
 span.katex-display {
   overflow-y: scroll;
   padding: 0.5rem;
