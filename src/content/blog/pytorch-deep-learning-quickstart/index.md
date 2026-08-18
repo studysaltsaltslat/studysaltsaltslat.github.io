@@ -6,7 +6,7 @@ tags: ['PyTorch', '深度学习', 'torchvision', '神经网络', '机器学习']
 language: 'Chinese'
 ---
 
-## 环境准备
+# 环境准备
 
 创建环境：
 
@@ -34,14 +34,14 @@ True
 img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 ```
 
-## 一些库的使用
+# 一些库的使用
 
-### `Tensorboard`
+## `Tensorboard`
 
 TensorBoard 是一个把模型==训练过程可视化==的工具
 核心作用：训练时记录数据，之后在浏览器中以曲线、图片、直方图等方式查看。
 
-#### `tensorboard`的作用
+### `tensorboard`的作用
 
 训练模型时，终端可能只会输出：
 
@@ -59,7 +59,7 @@ epoch 3: loss=1.05, accuracy=0.71
 - 训练集很好、验证集很差：是否过拟合
 - 两个实验谁更好：模型或参数是否有改进
 
-#### 使用方法
+### 使用方法
 
 `TensorBoard`本身主要负责“看”，`SummaryWriter`负责“记”。
 
@@ -83,7 +83,7 @@ writer = SummaryWriter("logs")
 它通常会给出地址：`http://localhost:6006`
 复制到浏览器打开，就能看图。 
 
-#### 记录数字曲线(最常用)
+### 记录数字曲线(最常用)
 
 例如记录损失值：
 
@@ -107,7 +107,7 @@ writer.add_scalar("Accuracy/val", val_acc, epoch)
 
 名字里使用`/`，`TensorBoard`会自动分组。比如 `Loss/train`和`Loss/val`会放在同一类里，方便比较。
 
-#### 记录图片
+### 记录图片
 
 TensorBoard 也能显示图片，例如看看训练数据是否正确：
 `writer.add_image("cat", image_tensor, 0)`
@@ -124,9 +124,9 @@ TensorBoard 也能显示图片，例如看看训练数据是否正确：
 - 数据增强后的图片是什么样
 - 模型生成的图片是否正常
 
-### `transforms`
+## `transforms`
 
-#### 内置`__call__`函数
+### 内置`__call__`函数
 
 让对象可以像函数一样直接用括号调用
 如下方例子，输出都为`ZhangFei`，但前者无需用`.hello`
@@ -143,7 +143,7 @@ person("ZhangFei")
 person.hello("ZhangFei")
 ```
 
-#### `ToTensor`
+### `ToTensor`
 
 把`PIL Image`或`numpy.ndarray`转换成`ToTensor`的形式。
 
@@ -153,7 +153,7 @@ img_tensor = trans_totensor(img)
 writer.add_image("ants_image", img_tensor)
 ```
 
-#### `Normalize`
+### `Normalize`
 
 作用：Normalize a tensor image with mean and standard deviation.(不支持PIL格式)
 
@@ -175,7 +175,7 @@ output[channel] = (input[channel] - mean[channel]) / std[channel]
   </tr>
 </table>
 
-#### `Resize`
+### `Resize`
 
 作用：Resize the input image to the given size.
 
@@ -203,7 +203,7 @@ writer.close()
 (224, 224)
 ```
 
-#### `Compose`
+### `Compose`
 
 作用：把多个图像预处理操作按顺序组合起来。
 
@@ -227,29 +227,29 @@ img = transforms.Normalize(...)(img)
 
 常用于给 Dataset 统一指定训练/测试数据的预处理流程。
 
-#### `Crop`
+### `Crop`
 
 通常训练集使用`RandomCrop`，测试集用`CenterCrop`，以保证评估结果稳定。
 
-##### `RandomCrop`
+#### `RandomCrop`
 
 `transforms.RandomCrop`会从图像中随机选择一个位置，裁剪出指定大小的区域。
 `transforms.RandomCrop((224, 224))`
 每次读取同一张图，裁剪位置都可能不同。这是一种数据增强：让模型看到同一物体的不同局部和位置，从而减少对固定位置的依赖，提升泛化能力。
 
-##### `CenterCrop`
+#### `CenterCrop`
 
 `transforms.CenterCrop`会从图像正中央裁剪出指定大小的区域。
 `transforms.CenterCrop((224, 224))`
 例如原图是 300×400，它会保留中心的 224×224 部分，四周会被裁掉。
 
-### `torchvision`中的数据集使用
+## `torchvision`中的数据集使用
 
 [Datasets — Torchvision 0.28 documentation](https://docs.pytorch.org/vision/stable/datasets.html)
 
-## 搭建网络模型
+# 搭建网络模型
 
-### `nn.Module`
+## `nn.Module`
 
 `nn.Module` 是 PyTorch 中所有神经网络模型的基类。
 
@@ -273,7 +273,7 @@ print(output)
 
 输出：`tensor(2.)`
 
-### `Convolution Layers`
+## `Convolution Layers`
 
 作用：用一个小的“滤波器”在输入上滑动，提取局部特征。
 
@@ -281,9 +281,9 @@ print(output)
 音频或时间序列：时间长度，使用 `Conv1d`
 视频或三维医学图像：深度 × 高度 × 宽度，使用 `Conv3d`
 
-#### 参数设置
+### 参数设置
 
-##### `padding`
+#### `padding`
 
 卷积前在输入边缘补零或其他数值，例如：
 
@@ -309,7 +309,7 @@ nn.Conv2d(3, 16, kernel_size=3, padding="valid")
 
 `valid` 表示不进行填充，空间尺寸会变小。
 
-##### `kernel_size`
+#### `kernel_size`
 
 `kernel_size`表示为卷积核大小。
 
@@ -317,7 +317,7 @@ nn.Conv2d(3, 16, kernel_size=3, padding="valid")
 
 卷积核越大，看到的局部区域越大，但参数量和计算量也会增加。现代网络通常用多个 `3 × 3` 卷积代替一个较大的卷积核。
 
-#### `nn.Conv2d`
+### `nn.Conv2d`
 
 下图是模拟8 张 RGB 图片经过卷积层的代码：
 
@@ -405,7 +405,7 @@ tensor([[[[10, 12],
           [13,  3]]]])
 ```
 
-### `Pooling Layers`
+## `Pooling Layers`
 
 池化缩小特征图，保留局部区域最重要或平均的特征。池化==不改变批量大小和通道数，只缩小高、宽==。
 
@@ -431,9 +431,9 @@ nn.AvgPool3d
 
 例如`x = torch.randn(8, 16, 32, 32)`表示8 张图片，每张有 16 个特征通道，每张特征图大小为 32 × 32。
 
-#### 参数
+### 参数
 
-##### `kernel_size` 和 `stride`
+#### `kernel_size` 和 `stride`
 
 ```python
 nn.MaxPool2d(kernel_size=2, stride=2)
@@ -463,7 +463,7 @@ nn.MaxPool2d(kernel_size=2)
 nn.MaxPool2d(kernel_size=2, stride=2)
 ```
 
-##### `padding`
+#### `padding`
 
 池化同样可以在边缘补充内容：
 
@@ -483,7 +483,7 @@ nn.MaxPool2d(
 )
 ```
 
-#### `MaxPool`
+### `MaxPool`
 
 ```python
 import torch
@@ -536,7 +536,7 @@ tensor([[[[2, 3, 1],
           [2, 1, 1]]]])
 ```
 
-### `Non-linear Activation`
+## `Non-linear Activation`
 
 激活函数通常放在卷积层或全连接层之后，用来给神经网络加入“非线性表达能力”。
 
@@ -568,7 +568,7 @@ tensor([[[[1., 0.],
           [0., 3.]]]])
 ```
 
-### `linear Layers`
+## `linear Layers`
 
 `nn.Linear` 是 PyTorch 中最常用的全连接层，也叫线性层。
 
@@ -601,7 +601,7 @@ print(y.shape)
 # torch.Size([1, 2])
 ```
 
-#### 内部原理
+### 内部原理
 
 当线性层代码为`linear = nn.Linear(3, 2)`时，这个层内部会自动创建：
 
@@ -636,7 +636,7 @@ $\text{out\_features} \times \text{in\_features}$为`weight`的参数量，$out\
 
 例如，`nn.Linear(3, 2)`中，参数量：2 × 3 + 2 = 8
 
-#### 代码
+### 代码
 
 ```python
 import torchvision
@@ -676,7 +676,7 @@ torch.Size([1, 1, 1, 196608])
 torch.Size([1, 1, 1, 10])
 ```
 
-### `Sequential`的使用
+## `Sequential`的使用
 
 以`CIFAR10`为例，模型如下图所示：
 
@@ -741,13 +741,13 @@ torch.Size([64, 10])
 
 <img src="/assets/pytorch-deep-learning-quickstart/image-20260809230136587.png" alt="image-20260809230136587" style="zoom: 40%;" />
 
-### 损失函数与反向传播
+## 损失函数与反向传播
 
 作用：
 
 计算实际输出和目标之间的差距，为更新输出提供一定依据(反向传播)
 
-#### `L1loss`
+### `L1loss`
 
 `L1loss`是绝对误差，公式为：\(\mathrm{L1} = \frac{1}{N}\sum_i|\hat y_i-y_i|\)
 
@@ -767,7 +767,7 @@ print(loss(inputs.float(),targets.float()))
 
 输出结果：`tensor(0.6667)`
 
-#### `MSEloss`
+### `MSEloss`
 
 `MSELoss`是均方误差，公式为：\(\mathrm{MSE} = \frac{1}{N}\sum_i(\hat y_i-y_i)^2\)
 
@@ -781,7 +781,7 @@ print(loss_mse(inputs.float(),targets.float()))
 
 输出结果：`tensor(1.3333)`
 
-#### `Softmax`+交叉熵
+### `Softmax`+交叉熵
 
 `CrossEntropyLoss`是单标签多分类，适用于每个样本只属于一个类别，例如猫 / 狗 / 鸟三分类。
 
@@ -800,7 +800,7 @@ output = [0.1, 0.2, 0.3]
 #Loss(x,class) = -0.2+log(exp(0.1)+exp(0.2)+exp(0.3))
 ```
 
-### 优化器 `optim`
+## 优化器 `optim`
 
 ```python
 import torch
@@ -850,9 +850,9 @@ for data in dataloader:
 
 `optim.step()`：**优化器**，根据这些梯度更新参数。
 
-## 模型训练
+# 模型训练
 
-### 现有网络模型使用及修改
+## 现有网络模型使用及修改
 
 ```python
 import torchvision
@@ -882,9 +882,9 @@ print(vgg16_false)
 1. 在`module`后再加一个线性层，即`nn.Linear(1000, 10)`
 2. 将最后一层从 `Linear(4096, 1000)` 替换为 `Linear(4096, 10)`(更常见)
 
-### 模型的保存与读取
+## 模型的保存与读取
 
-#### 模型的保存
+### 模型的保存
 
 ```python
 import torch
@@ -910,7 +910,7 @@ model = Net()
 torch.save(model, 'net_method1.pth')
 ```
 
-#### 模型的读取
+### 模型的读取
 
 ```python
 import torch
@@ -935,7 +935,7 @@ print(model)
 from module_save import *
 ```
 
-### 完整的模型训练-GPU训练
+## 完整的模型训练-GPU训练
 
 模型文件通常单独放在一个`py`文件中，下面是`model.py`的代码：
 
@@ -973,7 +973,7 @@ if __name__ == "__main__":
 
 
 
-### 完整的模型验证套路
+## 完整的模型验证套路
 
 在分类模型中，输出表示对每个类别预测的概率。如`[0.1,0.2]`表示识别为类别1的概率为0.1，识别为类别2的概率为0.2，且最终识别为类别1。可以对比输出与真实结果，计算正确率。
 
@@ -1074,9 +1074,9 @@ for i in range(epoch):
 writer.close()
 ```
 
-### 利用GPU训练
+## 利用GPU训练
 
-#### 方法1
+### 方法1
 
 对网络模型、数据(输入、标注)、损失函数后加上`.cuda()`即可：
 
@@ -1116,7 +1116,7 @@ print(end_time - start_time)
 
 也可以登录`google colab`进行GPU训练。
 
-#### 方法2
+### 方法2
 
 利用`.to(device)`
 
@@ -1134,7 +1134,7 @@ inputs = inputs.to(device)
 labels = labels.to(device)
 ```
 
-### 完整的模型验证套路
+## 完整的模型验证套路
 
 由于png格式是4个通道，除了RGB三个通道外，还有一个透明度通道。所以需要调用`.convert('RGB')`保留其颜色通道。
 

@@ -89,12 +89,13 @@ const {
     <script is:inline type='module'>
       import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs'
       mermaid.initialize({ startOnLoad: false, securityLevel: 'strict' })
-      const blocks = document.querySelectorAll('pre code.language-mermaid')
-      blocks.forEach((code) => {
+      const blocks = document.querySelectorAll('.astro-code[data-language="mermaid"]')
+      blocks.forEach((block) => {
         const container = document.createElement('div')
         container.className = 'mermaid'
-        container.textContent = code.textContent || ''
-        code.parentElement?.replaceWith(container)
+        const source = block.querySelector('button.copy')?.getAttribute('data-code')
+        container.textContent = source || block.querySelector('code')?.textContent || ''
+        block.replaceWith(container)
       })
       mermaid.run({ querySelector: '.mermaid' })
     </script>
