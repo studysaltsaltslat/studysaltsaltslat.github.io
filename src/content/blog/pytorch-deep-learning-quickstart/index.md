@@ -1,5 +1,5 @@
 ---
-title: 'PyTorch Deep Learning Quickstart Notes'
+title: 'pytorch快速入门学习笔记'
 description: 'A beginner-friendly PyTorch quickstart covering TensorBoard, image preprocessing, neural networks, training, validation, and GPU inference.'
 publishDate: '2026-08-17'
 tags: ['PyTorch', 'Deep Learning', 'torchvision', 'Neural Networks', 'Machine Learning']
