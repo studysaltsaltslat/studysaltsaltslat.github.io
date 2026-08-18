@@ -42,13 +42,13 @@ mark {
 
 /* Keep each nested TOC level visually distinct (the theme's default only
  * differentiates headings up to level 2). */
-toc-heading ul ul a {
+toc-heading ul ul a.ps-7 {
   padding-inline-start: 3rem !important;
 }
-toc-heading ul ul ul a {
+toc-heading ul ul ul a.ps-7 {
   padding-inline-start: 4.5rem !important;
 }
-toc-heading ul ul ul ul a {
+toc-heading ul ul ul ul a.ps-7 {
   padding-inline-start: 6rem !important;
 }
 

@@ -1,9 +1,9 @@
 ---
 title: 'pytorch快速入门学习笔记'
-description: 'A beginner-friendly PyTorch quickstart covering TensorBoard, image preprocessing, neural networks, training, validation, and GPU inference.'
+description: '面向初学者的 PyTorch 快速入门笔记，涵盖 TensorBoard、图像预处理、神经网络、训练、验证和 GPU 推理。'
 publishDate: '2026-08-17'
-tags: ['PyTorch', 'Deep Learning', 'torchvision', 'Neural Networks', 'Machine Learning']
-language: 'English'
+tags: ['PyTorch', '深度学习', 'torchvision', '神经网络', '机器学习']
+language: '中文'
 ---
 
 ## 环境准备
