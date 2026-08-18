@@ -7,6 +7,7 @@ import remarkMath from 'remark-math'
 // Local integrations
 import rehypeAutolinkHeadings from './src/plugins/rehype-auto-link-headings.ts'
 import rehypeMark from './src/plugins/rehype-mark.ts'
+import rehypeMermaid from './src/plugins/rehype-mermaid.ts'
 // Shiki
 import {
   addCollapse,
@@ -72,6 +73,7 @@ export default defineConfig({
       [rehypeKatex, {}],
       rehypeHeadingIds,
       rehypeMark,
+      rehypeMermaid,
       [
         rehypeAutolinkHeadings,
         {
