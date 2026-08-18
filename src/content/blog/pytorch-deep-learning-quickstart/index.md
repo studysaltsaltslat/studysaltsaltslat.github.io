@@ -1,9 +1,9 @@
 ---
-title: 'pytorch快速入门学习笔记'
+title: 'Pytorch快速入门学习笔记'
 description: '面向初学者的 PyTorch 快速入门笔记，涵盖 TensorBoard、图像预处理、神经网络、训练、验证和 GPU 推理。'
 publishDate: '2026-08-17'
 tags: ['PyTorch', '深度学习', 'torchvision', '神经网络', '机器学习']
-language: '中文'
+language: 'Chinese'
 ---
 
 ## 环境准备
@@ -65,9 +65,9 @@ epoch 3: loss=1.05, accuracy=0.71
 
 ```mermaid
 graph LR
-训练代码 --> SummaryWriter记录数据;
-SummaryWriter记录数据--> 日志文件;
-日志文件--> TensorBoard显示图表;
+  A[训练代码] --> B[SummaryWriter记录数据]
+  B --> C[日志文件]
+  C --> D[TensorBoard显示图表]
 ```
 
 ```python

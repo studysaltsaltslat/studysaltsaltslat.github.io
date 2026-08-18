@@ -86,9 +86,17 @@ const {
         }
       }
     </style>
-    <script type='module'>
+    <script is:inline type='module'>
       import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs'
-      mermaid.initialize({ startOnLoad: true, securityLevel: 'strict' })
+      mermaid.initialize({ startOnLoad: false, securityLevel: 'strict' })
+      const blocks = document.querySelectorAll('pre code.language-mermaid')
+      blocks.forEach((code) => {
+        const container = document.createElement('div')
+        container.className = 'mermaid'
+        container.textContent = code.textContent || ''
+        code.parentElement?.replaceWith(container)
+      })
+      mermaid.run({ querySelector: '.mermaid' })
     </script>
   </body>
 </html>

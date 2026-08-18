@@ -60,6 +60,9 @@ toc-heading ul ul ul a.ps-7 {
 toc-heading ul ul ul ul a.ps-7 {
   font-size: 0.85em;
 }
+toc-heading .toc-item {
+  padding-block: 0.2rem !important;
+}
 
 .mermaid {
   margin-block: 1rem;
